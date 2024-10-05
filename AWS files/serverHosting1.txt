@@ -1,0 +1,93 @@
+app.py
+
+from flask import Flask
+
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello():
+    return "Hello, World!"
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+requirements.txt
+
+click==8.0.3
+colorama==0.4.4
+Flask==2.0.2
+itsdangerous==2.0.1
+Jinja2==3.0.3
+MarkupSafe==2.0.1
+Werkzeug==2.0.2
+gunicorn==20.1.0
+
+
+all steps for python webapp hosting using flask
+
+
+sudo apt-get update -y
+mkdir myapp
+cd myapp/
+ 
+sudo apt-get install python3-venv python3-pip -y
+python3 -m venv myenv
+source myenv/bin/activate
+nano requirements.txt
+pip install -r requirements.txt
+nano app.py
+gunicorn --bind 0.0.0.0:5000 app:app
+ 
+
+
+proxy pass to gunicorn from nginx
+
+
+location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+ 
+
+nodejs: package.json
+
+
+
+{
+    "name": "node-app",
+    "description": "hello jenkins test app",
+    "version": "0.0.1",
+    "private": true,
+ 
+"main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+ 
+    "dependencies": {
+       "express": "3.12.0"
+    },
+    "devDependencies": {
+       "mocha": "10.2.0",
+       "supertest": "6.3.3"
+    }
+   }
+nodejs index.js
+
+
+var express = require('express');
+
+var app = express();//Respond with "hello world" for requests that hit our r>app.get('/', function (req, res) {
+ res.send('helloo from ishhu ');
+});//listen to port 3000 by default
+app.listen(process.env.PORT || 3000);
+
+module.exports = app;
